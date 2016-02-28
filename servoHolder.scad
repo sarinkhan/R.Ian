@@ -8,10 +8,15 @@ servoBodyX=5;
 servoBodyY=23.3;
 servoBodyZ=12;
 servoFixationLip=5;
-servoFixationPlatesThickness=2;
+servoFixationPlatesThickness=2.5;
 sHolesDistFromEdge=3;
 
-servoHolderLength=servoFixationPlatesThickness*2+servoFixationLip*2+servoBodyY;
+servoHolderLength=servoFixationLip*2+servoBodyY;
+servoHolderZ=servoBodyZ+servoFixationPlatesThickness;
+
+
+
+
 
 module servoFixationNoHoles()
 {
@@ -22,10 +27,7 @@ module servoFixationNoHoles()
     sfl=servoFixationLip;
     pThick=servoFixationPlatesThickness;
     
-    
-    
-    
-    cube([sbX+pThick,sbY+2*sfl,pThick]);
+    cube([servoBodyY,sbY+2*sfl,pThick]);
     
     translate([0,0,pThick])
     cube([pThick*2,sfl,sbZ]);
@@ -44,7 +46,7 @@ module servoFixationNoHoles()
 }
 
 
-module servoFixationSerVoHoles()
+module servoFixationServoHoles()
 {
     sbX=servoBodyX;
     sbY=servoBodyY;
@@ -76,4 +78,4 @@ module servoFixationSerVoHoles()
 }
 
 
-//servoFixationSerVoHoles();
+//servoFixationServoHoles();

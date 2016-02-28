@@ -12,7 +12,7 @@ simpleFixationEarsX=8;
 fixationHolesRadius=3/2;
 
 basicBattHolderWidth=battRadius*2+battHolderWallsThickness*2;
-basicBattHolderLength=battLength+battBoxLenghtAdjustment;
+basicBattHolderLength=battLength+battBoxLenghtAdjustment+battHolderWallsThickness*2;
 
 
 module battTabHolder()
@@ -35,6 +35,8 @@ cube([battHolderWallsThickness,battHolderWallsThickness,battRadius]);
 
 module basicBattHolder()
 {
+    translate([battHolderWallsThickness,battHolderWallsThickness,0])
+    {
 cube([battLength+battBoxLenghtAdjustment,battRadius*2,battHolderWallsThickness]);
 translate([-battHolderWallsThickness,0,0])
 cube([battHolderWallsThickness,battRadius*2,battRadius*1.5]);
@@ -53,6 +55,7 @@ cube([battLength+battBoxLenghtAdjustment+battHolderWallsThickness*2,battHolderWa
 
 translate([-battHolderWallsThickness,battRadius*2,0])
 cube([battLength+battBoxLenghtAdjustment+battHolderWallsThickness*2,battHolderWallsThickness,battRadius]);
+    }
 }
 
 
