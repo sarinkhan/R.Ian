@@ -345,7 +345,8 @@ cylinder(r=freeWheelChassisHolesRadius,h=holesZ,$fn=12);
 
 sensorsBlockDistY=32;
 gridHolesDistFromEdgeY=15;
-
+module chassisWithHoles()
+{
 difference()
 {
     basicChassis();
@@ -524,9 +525,195 @@ difference()
     rotate([-90,0,0])
     cylinder(r=fixationScrewsRadius,h=lateralHolesDepth,$fn=16);
 }
+}
+
+module sensorServoSupport()
+{
+difference()
+    {
+union()
+    {
+translate([80,48.5,4.5])
+{
+rotate([0,0,-90])
+servoFixationVerticalServoHoles();
+    
+ 
+}
+translate([113.3,28.5,5])   
+cube([2,25,1]);
+}
+
+    translate([baseChassisX-contactSwitchScrewDecal2-sensorsFixationBeamsSpacing,baseChassisY-sensorsBlockDistY,-1])
+    cylinder(r=contactSwitchScrewsRadius,h=freeWheelReinforcementBeamZ*2,$fn=16);
+    
+    translate([baseChassisX-contactSwitchScrewDecal2-sensorsFixationBeamsSpacing,sensorsBlockDistY,-1])
+    cylinder(r=contactSwitchScrewsRadius,h=freeWheelReinforcementBeamZ*2,$fn=16);
+
+   translate([baseChassisX-contactSwitchScrewDecal2-sensorsFixationBeamsSpacing*2,baseChassisY-sensorsBlockDistY,-1])
+    cylinder(r=contactSwitchScrewsRadius,h=freeWheelReinforcementBeamZ*2,$fn=16);
+    
+    translate([baseChassisX-contactSwitchScrewDecal2-sensorsFixationBeamsSpacing*2,sensorsBlockDistY,-1])
+    cylinder(r=contactSwitchScrewsRadius,h=freeWheelReinforcementBeamZ*2,$fn=16);
+
+    translate([baseChassisX-contactSwitchScrewDecal2-sensorsFixationBeamsSpacing*3,baseChassisY-sensorsBlockDistY,-1])
+    cylinder(r=contactSwitchScrewsRadius,h=freeWheelReinforcementBeamZ*2,$fn=16);
+    
+    translate([baseChassisX-contactSwitchScrewDecal2-sensorsFixationBeamsSpacing*3,sensorsBlockDistY,-1])
+    cylinder(r=contactSwitchScrewsRadius,h=freeWheelReinforcementBeamZ*2,$fn=16);
+}
+}
+
+module sensorServoSupportPrintReady()
+{
+    rotate([-180,0,0])
+sensorServoSupport();
+}
 
 
 
+
+
+
+
+
+beamsThickness=2.0;
+circuit1X=50;
+circuit1Y=70;
+circuit1ScrewsRadius=2/2;
+circuit1ScrewsDistFromEdge=1;
+circuit1ScrewPillarsH=5+beamsThickness;
+screwHolesRadius=2/2;
+padding=0.1;
+
+module openBasePlate(x,y,nbBeamsX=3,nbBeamsY=2)
+{
+	xShift=x/(nbBeamsX+1);
+	for (i =[0:nbBeamsX+1])
+	{
+		translate([xShift*i,0,0])
+			cube([beamsThickness,y,beamsThickness]);
+	}
+
+
+	yShift=y/(nbBeamsY+1);
+	for (i =[0:nbBeamsY+1])
+	{
+		translate([0,yShift*i,0])
+			cube([x+beamsThickness,beamsThickness,beamsThickness]);
+	}
+}
+module circuit1Plate()
+{
+
+	openBasePlate(circuit1X,circuit1Y,0,0);
+
+	translate([beamsThickness+circuit1ScrewsDistFromEdge,beamsThickness+circuit1ScrewsDistFromEdge,0])
+		difference()
+		{
+			cylinder(r=beamsThickness,h=circuit1ScrewPillarsH,$fn=32);
+			motorBracketHole();
+		}
+
+	translate([beamsThickness+circuit1ScrewsDistFromEdge,circuit1Y-circuit1ScrewsDistFromEdge,0])
+		difference()
+		{
+			cylinder(r=beamsThickness,h=circuit1ScrewPillarsH,$fn=32);
+			motorBracketHole();
+		}
+
+	translate([circuit1X-circuit1ScrewsDistFromEdge,beamsThickness+circuit1ScrewsDistFromEdge,0])
+		difference()
+		{
+			cylinder(r=beamsThickness,h=circuit1ScrewPillarsH,$fn=32);
+			motorBracketHole();
+		}
+
+	translate([circuit1X-circuit1ScrewsDistFromEdge,circuit1Y-circuit1ScrewsDistFromEdge,0])
+		difference()
+		{
+			cylinder(r=beamsThickness,h=circuit1ScrewPillarsH,$fn=32);
+			motorBracketHole();
+		}		
+}
+
+module motorBracketHole(h0=10,shift=beamsThickness,r0=screwHolesRadius) 
+{
+	translate([0,0,padding+shift]) 
+	{
+    	cylinder(r=r0, h0+padding, center = false,$fn=32);
+	}
+}
+
+module electronicsPlate()
+{
+translate([0,0,22])
+{
+    difference()
+    {
+        union()
+        {
+            translate([0, 0,0])
+            cube([freeWheelReinforcementBeamThickness,baseChassisY , freeWheelReinforcementBeamZ]);
+
+
+            translate([servoDecalFromEdge-freeWheelReinforcementBeamThickness+10, 0,0])
+            cube([freeWheelReinforcementBeamThickness,baseChassisY , freeWheelReinforcementBeamZ]);
+
+
+            translate([servoDecalFromEdge +servoHolderLength-freeWheelReinforcementBeamThickness-2, 0,0])
+            cube([freeWheelReinforcementBeamThickness,baseChassisY , freeWheelReinforcementBeamZ]);
+
+            translate([0, 0, 0])
+            cube([servoDecalFromEdge+servoHolderLength, freeWheelReinforcementBeamThickness, freeWheelReinforcementBeamZ]);
+
+
+            translate([0, baseChassisY - freeWheelReinforcementBeamThickness,0])
+            cube([servoDecalFromEdge+servoHolderLength, freeWheelReinforcementBeamThickness, freeWheelReinforcementBeamZ]);
+        }
+        
+        //back holes
+        translate([freeWheelReinforcementBeamThickness/2, freeWheelReinforcementBeamThickness/2,-freeWheelReinforcementBeamZ])
+        cylinder(r=fixationScrewsRadius,h=freeWheelReinforcementBeamZ*3,$fn=12);
+        
+        translate([freeWheelReinforcementBeamThickness/2, baseChassisY-freeWheelReinforcementBeamThickness/2,-freeWheelReinforcementBeamZ])
+        cylinder(r=fixationScrewsRadius,h=freeWheelReinforcementBeamZ*3,$fn=12);
+        
+        //middle holes
+        translate([servoDecalFromEdge+freeWheelReinforcementBeamThickness/2, freeWheelReinforcementBeamThickness/2,-freeWheelReinforcementBeamZ])
+        cylinder(r=fixationScrewsRadius,h=freeWheelReinforcementBeamZ*3,$fn=12);
+        
+        translate([servoDecalFromEdge+freeWheelReinforcementBeamThickness/2, baseChassisY-freeWheelReinforcementBeamThickness/2,-freeWheelReinforcementBeamZ])
+        cylinder(r=fixationScrewsRadius,h=freeWheelReinforcementBeamZ*3,$fn=12);
+        
+        //front holes
+         translate([servoDecalFromEdge+servoHolderLength-freeWheelReinforcementBeamThickness/2, freeWheelReinforcementBeamThickness/2,-freeWheelReinforcementBeamZ])
+        cylinder(r=fixationScrewsRadius,h=freeWheelReinforcementBeamZ*3,$fn=12);
+        
+        translate([servoDecalFromEdge+servoHolderLength-freeWheelReinforcementBeamThickness/2, baseChassisY-freeWheelReinforcementBeamThickness/2,-freeWheelReinforcementBeamZ])
+        cylinder(r=fixationScrewsRadius,h=freeWheelReinforcementBeamZ*3,$fn=12);
+        
+        
+    }
+    
+    translate([0,(baseChassisY-circuit1Y)/2-freeWheelReinforcementBeamThickness/5,freeWheelReinforcementBeamZ-2])
+    circuit1Plate(circuit1X,circuit1Y,0,0);
+}
+
+}
+
+
+
+
+
+
+
+
+//sensorServoSupportPrintReady();
+
+
+//chassisWithHoles();
+electronicsPlate();
 
 
 
