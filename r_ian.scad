@@ -429,7 +429,7 @@ difference()
     translate([freeWheelReinforcementBeamZ/2,servoBodyY + backVerticalBeamsDecalY+freeWheelReinforcementBeamZ/2,-1])
     cylinder(r=contactSwitchScrewsRadius,h=freeWheelReinforcementBeamZ*2,$fn=16);*/
     
-     translate([freeWheelReinforcementBeamZ/2,baseChassisY- gridHolesDistFromEdgeY,-1])
+    translate([freeWheelReinforcementBeamZ/2,baseChassisY- gridHolesDistFromEdgeY,-1])
     cylinder(r=contactSwitchScrewsRadius,h=freeWheelReinforcementBeamZ*2,$fn=16);
     
     translate([freeWheelReinforcementBeamZ/2,gridHolesDistFromEdgeY,-1])
@@ -702,19 +702,131 @@ translate([0,0,22])
 
 }
 
+lipoChargerX=27.1;
+lipoChargerY=18.6;
+
+lipoBoardHolderClawsLength=10;
+lipoBoardHolderClawsThickness=1;
+lipoBoardHolderClawsHeight=5;
+
+lipoChargerBoardDecalX=5;
+
+lipoChargerSupportX=lipoChargerX+lipoChargerBoardDecalX+lipoBoardHolderClawsThickness*2;
+lipoChargerSupportY=30;
+lipChargerSupportZ=1;
+
+lipoChargerSupportDecalY=(baseChassisY-lipoChargerSupportY)/2;
+lipoChargerBoardDecalY=(lipoChargerSupportY-lipoChargerY)/2;
 
 
 
 
 
 
+module lipoChargerBasicSupport()
+{
+    translate([0,lipoChargerSupportDecalY,freeWheelReinforcementBeamThickness])
+    cube([lipoChargerSupportX,lipoChargerSupportY,lipChargerSupportZ]);
+}
 
-//sensorServoSupportPrintReady();
+module lipoChargerSupportWithHoles()
+{
+    difference()
+    {
+    lipoChargerBasicSupport();
+        //right switch back
+ 
+    translate([contactSwitchScrewDecal2,contactSwitchScrew1DecalY+freeWheelReinforcementBeamThickness,-1])
+    cylinder(r=contactSwitchScrewsRadius,h=freeWheelReinforcementBeamZ*2,$fn=16);
+    
+    //left switch back
+
+    
+    translate([contactSwitchScrewDecal2,baseChassisY-contactSwitchScrew1DecalY-freeWheelReinforcementBeamThickness,-1])
+    cylinder(r=contactSwitchScrewsRadius,h=freeWheelReinforcementBeamZ*2,$fn=16);
+        
+    translate([servoDecalFromEdge-freeWheelReinforcementBeamZ/2,baseChassisY- servoBodyY-backVerticalBeamsDecalY-freeWheelReinforcementBeamZ/2,-1])
+    cylinder(r=contactSwitchScrewsRadius,h=freeWheelReinforcementBeamZ*2,$fn=16);
+    
+    translate([servoDecalFromEdge-freeWheelReinforcementBeamZ/2,servoBodyY + backVerticalBeamsDecalY+freeWheelReinforcementBeamZ/2,-1])
+    cylinder(r=contactSwitchScrewsRadius,h=freeWheelReinforcementBeamZ*2,$fn=16);
+    }
+    
+    //bottom spacer
+    translate([lipoChargerBoardDecalX+4,lipoChargerSupportDecalY+lipoChargerBoardDecalY,freeWheelReinforcementBeamThickness+1])
+    {
+        cube([lipoBoardHolderClawsLength-4,lipoChargerY,2]);
+        translate([0,5,0])
+        cube([lipoChargerX-6,lipoChargerY-10,2]);
+    }
+    
+    //right claw
+    translate([lipoChargerBoardDecalX,lipoChargerSupportDecalY+lipoChargerBoardDecalY-lipoBoardHolderClawsThickness,freeWheelReinforcementBeamThickness])
+    {
+        cube([lipoBoardHolderClawsLength,lipoBoardHolderClawsThickness,lipoBoardHolderClawsHeight]);
+        translate([0,0,lipoBoardHolderClawsHeight])
+            cube([lipoBoardHolderClawsLength,lipoBoardHolderClawsThickness*2,lipoBoardHolderClawsThickness]);
+    }
+    
+    //left claw
+    translate([lipoChargerBoardDecalX,lipoChargerSupportDecalY+lipoChargerBoardDecalY+lipoChargerY,freeWheelReinforcementBeamThickness])
+    {
+        cube([lipoBoardHolderClawsLength,lipoBoardHolderClawsThickness,lipoBoardHolderClawsHeight]);
+        translate([0,-lipoBoardHolderClawsThickness,lipoBoardHolderClawsHeight])
+            cube([lipoBoardHolderClawsLength,lipoBoardHolderClawsThickness*2,lipoBoardHolderClawsThickness]);
+    }
+    
+    //back claw
+    translate([lipoChargerBoardDecalX+lipoBoardHolderClawsThickness+lipoChargerX,lipoChargerSupportDecalY+lipoChargerBoardDecalY,freeWheelReinforcementBeamThickness])
+    {
+    cube([lipoBoardHolderClawsThickness,lipoChargerY,lipoBoardHolderClawsHeight]);
+        translate([-lipoBoardHolderClawsThickness,0,lipoBoardHolderClawsHeight])
+        cube([lipoBoardHolderClawsThickness*2,lipoChargerY,lipoBoardHolderClawsThickness]);
+        
+    }
+    
+    
+    //front claw right
+    translate([lipoChargerBoardDecalX-lipoBoardHolderClawsThickness,lipoChargerSupportDecalY+lipoChargerBoardDecalY+2,freeWheelReinforcementBeamThickness])
+    {
+    cube([lipoBoardHolderClawsThickness,2,lipoBoardHolderClawsHeight]);
+        translate([0,0,lipoBoardHolderClawsHeight])
+        cube([lipoBoardHolderClawsThickness*2,2,lipoBoardHolderClawsThickness]);
+        
+    }
+    
+    //front claw left
+    translate([lipoChargerBoardDecalX-lipoBoardHolderClawsThickness,lipoChargerSupportDecalY+lipoChargerBoardDecalY+lipoChargerY-4,freeWheelReinforcementBeamThickness])
+    {
+    cube([lipoBoardHolderClawsThickness,2,lipoBoardHolderClawsHeight]);
+        translate([0,0,lipoBoardHolderClawsHeight])
+        cube([lipoBoardHolderClawsThickness*2,2,lipoBoardHolderClawsThickness]);
+        
+    }
+    
+    translate([lipoChargerBoardDecalX-lipoBoardHolderClawsThickness*2,lipoChargerSupportDecalY+lipoChargerBoardDecalY+2,freeWheelReinforcementBeamThickness+lipoBoardHolderClawsThickness])
+    {
+        cube([lipoBoardHolderClawsThickness*2,lipoChargerY-4,lipoBoardHolderClawsThickness]);
+        
+    }
+    
+    
+
+    
+}
 
 
-//chassisWithHoles();
+
+
+lipoChargerSupportWithHoles();
+
+
+/*sensorServoSupportPrintReady();
+
+
+chassisWithHoles();
 electronicsPlate();
-
+*/
 
 
 
